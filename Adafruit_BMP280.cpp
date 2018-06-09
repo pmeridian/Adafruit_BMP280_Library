@@ -37,7 +37,9 @@ Adafruit_BMP280::Adafruit_BMP280(int8_t cspin, int8_t mosipin, int8_t misopin, i
 { }
 
 
-bool Adafruit_BMP280::begin(uint8_t a) {
+
+bool Adafruit_BMP280::begin(uint8_t a, uint8_t chipid) {
+
   _i2caddr = a;
 
   if (_cs == -1) {
@@ -58,13 +60,11 @@ bool Adafruit_BMP280::begin(uint8_t a) {
     }
   }
 
-  if (read8(BMP280_REGISTER_CHIPID) != 0x58)
+  if (read8(BMP280_REGISTER_CHIPID) != chipid)
     return false;
 
   readCoefficients();
-  //write8(BMP280_REGISTER_CONTROL, 0x3F);
-  // x1 T oversampling, x8 P oversampling, normal mode
-  write8(BMP280_REGISTER_CONTROL, 0x33); 
+  write8(BMP280_REGISTER_CONTROL, 0x3F);
   return true;
 }
 
@@ -148,7 +148,7 @@ void Adafruit_BMP280::write8(byte reg, byte value)
 
 /**************************************************************************/
 /*!
-    @brief  Reads an 8 bit value over I2C
+    @brief  Reads an 8 bit value over I2C/SPI
 */
 /**************************************************************************/
 uint8_t Adafruit_BMP280::read8(byte reg)
@@ -177,7 +177,7 @@ uint8_t Adafruit_BMP280::read8(byte reg)
 
 /**************************************************************************/
 /*!
-    @brief  Reads a 16 bit value over I2C
+    @brief  Reads a 16 bit value over I2C/SPI
 */
 /**************************************************************************/
 uint16_t Adafruit_BMP280::read16(byte reg)
@@ -213,7 +213,7 @@ uint16_t Adafruit_BMP280::read16_LE(byte reg) {
 
 /**************************************************************************/
 /*!
-    @brief  Reads a signed 16 bit value over I2C
+    @brief  Reads a signed 16 bit value over I2C/SPI
 */
 /**************************************************************************/
 int16_t Adafruit_BMP280::readS16(byte reg)
@@ -231,10 +231,9 @@ int16_t Adafruit_BMP280::readS16_LE(byte reg)
 
 /**************************************************************************/
 /*!
-    @brief  Reads a signed 16 bit value over I2C
+    @brief  Reads a 24 bit value over I2C/SPI
 */
 /**************************************************************************/
-
 uint32_t Adafruit_BMP280::read24(byte reg)
 {
   uint32_t value;

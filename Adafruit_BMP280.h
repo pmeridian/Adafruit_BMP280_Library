@@ -32,9 +32,12 @@
 #endif
 
 /*=========================================================================
-    I2C ADDRESS/BITS
+
+    I2C ADDRESS/BITS/SETTINGS
     -----------------------------------------------------------------------*/
-    #define BMP280_ADDRESS                (0x76)
+    #define BMP280_ADDRESS                (0x77)
+    #define BMP280_CHIPID                 (0x58)
+
 /*=========================================================================*/
 
 /*=========================================================================
@@ -68,6 +71,7 @@
       BMP280_REGISTER_TEMPDATA           = 0xFA,
     };
 
+
 /*=========================================================================
     OVERSAMPLING CONFIG
     -----------------------------------------------------------------------*/        enum 
@@ -79,6 +83,7 @@
      BMP280_OVERSAMPLING_U8              = 0x4,
      BMP280_OVERSAMPLING_U16             = 0xF,
    };
+
 
 /*=========================================================================*/
 
@@ -116,7 +121,11 @@ class Adafruit_BMP280_Unified : public Adafruit_Sensor
   public:
     Adafruit_BMP280_Unified(int32_t sensorID = -1);
 
+<<<<<<< HEAD
     bool  begin(uint8_t addr = BMP280_ADDRESS);
+=======
+    bool  begin(uint8_t addr = BMP280_ADDRESS, uint8_t chipid = BMP280_CHIPID);
+>>>>>>> refs/remotes/origin/master
     void  getTemperature(float *temp);
     void  getPressure(float *pressure);
     float pressureToAltitude(float seaLevel, float atmospheric, float temp);
@@ -134,14 +143,17 @@ class Adafruit_BMP280_Unified : public Adafruit_Sensor
 class Adafruit_BMP280
 {
   public:
-    Adafruit_BMP280(void);
+
+    Adafruit_BMP280();
     Adafruit_BMP280(int8_t cspin);
     Adafruit_BMP280(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
-    bool  begin(uint8_t addr = BMP280_ADDRESS);
+    bool  begin(uint8_t addr = BMP280_ADDRESS, uint8_t chipid = BMP280_CHIPID);
+
     float readTemperature(void);
     float readPressure(void);
     float readAltitude(float seaLevelhPa = 1013.25);
+
 
     void sleep();
     void forcedMode();
@@ -149,6 +161,7 @@ class Adafruit_BMP280
 
     void setPressureOversampling(byte os);
     void setTemperatureOversampling(byte os);
+
 
   private:
 
